@@ -17,14 +17,16 @@
   </div>
 <script type="text/javascript">
  var str = 1;
- function nextPage() {
- str++;
- var requri = 'https://api.github.com/search/users?q=location:Wroclaw+location:Wrocław?&per_page=90&page='+str;    
- $.getJSON(requri, function(json) {
-   $.each( json.items, function(i, val) {
-     $('#ghapidata').append('<a href="https://github.com/'+val.login+'" target="_blank"><img src="'+val.avatar_url+'" title="'+val.login+ '"/></a>');
-   })
- });
+function nextPage() {
+  str++;
+  var requri = 'https://api.github.com/search/users?q=location:Wroclaw+location:Wrocław?&per_page=90&page='+str;    
+  $.getJSON(requri, function(json) {
+    $.each( json.items, function(i, val) {
+      $('#ghapidata').append('<a href="https://github.com/'+val.login+'" target="_blank"><img src="'+val.avatar_url+'" title="'+val.login+ '"/></a>');
+    })
+  }).done(function() {
+    $('#btn').addClass('visible');
+  });
 }
 </script> 
 </body>
