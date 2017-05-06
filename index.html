@@ -3,32 +3,57 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>code.wroclaw.pl</title>
-  <meta name="author" content="Code Wrocław">
+  <meta name="author" content="herbo.pl">
+  <link rel="shortcut icon" href="favicon.ico">
   <link rel="icon" type="image/png" href="fav-green.png">
   <link rel="stylesheet" type="text/css" media="all" href="css/styles.css">
   <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 </head>
+
 <body>
   <div id="w">
-    <h1 class="title"><a href="/">code.wroclaw.pl</a></h1>  
+    <a href="https://github.com/herbowicz/code.wroclaw.pl"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <h1 id="title"><a href="/">code.wroclaw.pl</a></h1>  
     <div id="ghapidata" class="clearfix"></div>
-    <div class="next"><button id="btn" style="display:none;" onclick="nextPage()">More</button></div>  
-  </div>
+    <div class="next"><button id="btn" style="display:none;" onclick="ghPage()">More Avatars</button></div>
+    <div id="disqus_thread"></div><noscript>Please enable JavaScript.</a></noscript>                               
+  </div>  
+
 <script type="text/javascript">
- var str = 1;
-function nextPage() {
-  str++;
-  var requri = 'https://api.github.com/search/users?q=location:Wroclaw+location:Wrocław?&per_page=90&page='+str;    
-  $.getJSON(requri, function(json) {
-    $.each( json.items, function(i, val) {
-      $('#ghapidata').append('<a href="https://github.com/'+val.login+'" target="_blank"><img src="'+val.avatar_url+'" title="'+val.login+ '"/></a>');
+var str = 1;
+ghPage();
+function ghPage() {
+var requri = 'https://api.github.com/search/users?q=location:Wroclaw+location:Wrocław?&per_page=80&page='+str;    
+$.getJSON(requri, function(json) {
+  $.each( json.items, function(i, val) {
+      $('#ghapidata').append('<span class="avatar" id="'+val.login+'"><img src="'+val.avatar_url+ '" /></span>');
     })
   }).done(function() {
     $('#btn').addClass('visible');
+
+	$('.avatar').one('mouseenter', function() {
+	  var that = this; console.log(this);
+	     var requri = 'https://api.github.com/users/'+ this.id; 
+	     $.getJSON(requri, function(val) {
+                var hire = val.hireable ? "Available for hire" : ""; 
+                var link = val.blog;
+                if (!/^ ?https?:\/\//i.test(link)) { link = 'http://' + link; }
+	        $(that).append('<div class="tooltip fade-in"><a href="https://github.com/'+val.login+'" target="_blank"><h2>'+val.name+'</h2></a><ul><li>'+val.login+' ID: '+val.id+'</li><li><a href="'+link+'" target="_blank">'+link.substr(link.indexOf('://')+3)+'</a></li><li>'+val.bio+'</li><li>'+val.email+'</li><li>Repos: <b>'+val.public_repos+'</b></li><li>Followers: '+val.followers+'</li><li>Following: '+val.following+'</li><li>Since: '+val.created_at.substring(0, 10)+'</li><li>'+hire+'</li></ul></div>');
+	       })
+	});
   });
+str++;
 }
-</script> 
+
+(function() { 
+var d = document, s = d.createElement('script');
+s.src = 'https://codewro.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
 </body>
 </html>
-
