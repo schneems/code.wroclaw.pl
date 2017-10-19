@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom';
 
 document.addEventListener('DOMContentLoaded', function(){
 
-  const Coder = ({user}) =>
-    <span title={user.login} id={user.login}>
-      <img style={{width: '100px', height: '100px'}} src={user.avatar_url} />
+  const Coder = ({coder}) =>
+    <span title={coder.login} id={coder.login}>
+      <img style={{width: '100px', height: '100px'}} src={coder.avatar_url} />
     </span>;
 
   class CodersList extends Component {
       constructor(props) {
           super(props);
           this.state = {
-              users: [],
+              coders: [],
           };
       }
       fetchData(url) {
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function(){
                   return response;
               })
               .then((response) => response.json())
-              .then((users) => this.setState({ users }))
+              .then((coders) => this.setState({ coders }))
               .catch(() => this.setState({ hasErrored: true }));
       }
       componentDidMount() {
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function(){
       render() {
         return (
             <div>
-                {this.state.users.items && this.state.users.items.map((user) => <Coder key={user.id} user={user} />)}
+                {this.state.coders.items && this.state.coders.items.map((coder) => <Coder key={coder.id} coder={coder} />)}
             </div>
         );
       }
